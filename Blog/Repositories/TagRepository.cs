@@ -1,12 +1,13 @@
 ﻿using Blog.Data;
 using Blog.Models;
 using Blog.Models.DTOs;
+using Blog.Repositories.Interfaces;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
 namespace Blog.Repositories
 {
-    public class TagRepository
+    public class TagRepository : ITagRepository
     {
         private readonly SqlConnection _connection;
 
@@ -19,9 +20,7 @@ namespace Blog.Repositories
         {
             var sql = "SELECT * FROM Tag";
 
-            await _connection.OpenAsync();
             return (await _connection.QueryAsync<TagResponseDTO>(sql)).ToList();
-
         }
 
         public async Task CreateTagAsync(Tag tag)

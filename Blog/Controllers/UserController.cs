@@ -45,5 +45,33 @@ namespace Blog.Controllers
                 return NotFound("Usuário não encontrado!");
             return Ok(user);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateUser(int id, UserRequestDTO userDto)
+        {
+            try
+            {
+                await _userService.UpdateUserAsync(id, userDto);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            try
+            {
+                await _userService.DeleteUserAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

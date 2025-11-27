@@ -20,9 +20,7 @@ namespace Blog.Repositories
         {
             var sql = "SELECT * FROM Category";
     
-            await _connection.OpenAsync();
             return (await _connection.QueryAsync<CategoryResponseDTO>(sql)).ToList(); 
-            
         }
 
         public async Task CreateCategoryAsync(Category category)

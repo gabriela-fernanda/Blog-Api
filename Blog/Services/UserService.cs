@@ -32,5 +32,25 @@ namespace Blog.Services
         {
             return await _userRepository.GetByIdAsync(id);
         }
+
+        public async Task UpdateUserAsync(int id, UserRequestDTO userDto)
+        {
+            var existingUser = await _userRepository.GetByIdAsync(id);
+            if (existingUser == null)
+                throw new Exception("Usuário não encontrado!");
+
+            var updatedUser = new User( userDto.Name, userDto.Email, userDto.PasswordHash, userDto.Bio, userDto.Image, userDto.Name.ToLower().Replace(" ", "-"));
+
+            await _userRepository.UpdateUserAsync(id, updatedUser);
+        }
+
+        public async Task DeleteUserAsync(int id)
+        {
+            var existingUser = await _userRepository.GetByIdAsync(id);
+            if (existingUser == null)
+                throw new Exception("Usuário não encontrado!");
+
+            await _userRepository.DeleteUserAsync(id);
+        }
     }
 }

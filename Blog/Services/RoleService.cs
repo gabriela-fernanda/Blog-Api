@@ -33,6 +33,9 @@ namespace Blog.Services
 
         public async Task UpdateRoleAsync(int id, RoleRequestDTO role)
         {
+            var existingRole = await _roleRepository.GetByIdAsync(id);
+            if (existingRole == null)
+                throw new Exception("Função não encontrada!");
             var newRole = new Role(role.Name, role.Name.ToLower().Replace(" ", "-"));
 
             await _roleRepository.UpdateRoleAsync(id, newRole); ;
@@ -40,6 +43,9 @@ namespace Blog.Services
 
         public async Task DeleteRoleAsync(int id)
         {
+            var existingRole = await _roleRepository.GetByIdAsync(id);
+            if (existingRole == null)
+                throw new Exception("Função não encontrada!");
             await _roleRepository.DeleteRoleAsync(id);
         }
     }

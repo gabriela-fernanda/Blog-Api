@@ -54,23 +54,29 @@ namespace Blog.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateCategory(int id, CategoryRequestDTO category)
         {
-            var existing = await _categoryService.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound("Categoria não encontrada!");
-
-            await _categoryService.UpdateCategoryAsync(id, category);
-            return NoContent();
+            try
+            {
+                await _categoryService.UpdateCategoryAsync(id, category);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteCategory(int id)
         {
-            var existing = await _categoryService.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound("Categoria não encontrada!");
-
-            await _categoryService.DeleteCategoryAsync(id);
-            return NoContent();
+            try
+            {
+                await _categoryService.DeleteCategoryAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

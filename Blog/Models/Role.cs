@@ -6,6 +6,8 @@
         public string Name { get; private set; }
         public string Slug { get; private set; }
 
+        public List<User> Users { get; private set; }
+
         public Role() { }
 
         public Role(string name, string slug)

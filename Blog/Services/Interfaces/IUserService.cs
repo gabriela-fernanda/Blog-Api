@@ -8,5 +8,7 @@ namespace Blog.Services.Interfaces
         Task<List<UserResponseDTO>> GetAllUsersAsync();
         Task<User> GetByIdAsync(int id);
         Task CreateUserAsync(UserRequestDTO user);
+        Task UpdateUserAsync(int id, UserRequestDTO userDto);
+        Task DeleteUserAsync(int id);
     }
 }

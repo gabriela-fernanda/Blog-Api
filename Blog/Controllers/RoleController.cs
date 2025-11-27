@@ -50,23 +50,29 @@ namespace Blog.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateRole(int id, RoleRequestDTO role)
         {
-            var existing = await _roleService.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound("Role não encontrada!");
-
-            await _roleService.UpdateRoleAsync(id, role);
-            return NoContent();
+            try
+            {
+                await _roleService.UpdateRoleAsync(id, role);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteRole(int id)
         {
-            var existing = await _roleService.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound("Role não encontrada!");
-
-            await _roleService.DeleteRoleAsync(id);
-            return NoContent();
+            try
+            {
+                await _roleService.DeleteRoleAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

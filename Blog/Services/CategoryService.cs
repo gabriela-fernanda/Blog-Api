@@ -33,6 +33,10 @@ namespace Blog.Services
 
         public async Task UpdateCategoryAsync(int id, CategoryRequestDTO category)
         {
+            var existingCategory = await _categoryRepository.GetByIdAsync(id);
+            if (existingCategory == null)
+                throw new Exception("Categoria não encontrada!");
+
             var newCategory = new Category(category.Name, category.Name.ToLower().Replace(" ", "-"));
 
             await _categoryRepository.UpdateCategoryAsync(id, newCategory); ;
@@ -40,6 +44,10 @@ namespace Blog.Services
 
         public async Task DeleteCategoryAsync(int id)
         {
+            var existingCategory = await _categoryRepository.GetByIdAsync(id);
+            if (existingCategory == null)
+                throw new Exception("Categoria não encontrada!");
+
             await _categoryRepository.DeleteCategoryAsync(id);
         }
     }

@@ -33,12 +33,20 @@ namespace Blog.Services
 
         public async Task UpdateTagAsync(int id, TagRequestDTO tag)
         {
+            var existingTag = await _tagRepository.GetByIdAsync(id);
+            if (existingTag == null)
+                throw new Exception("Tag não encontrada!");
+
             var newTag = new Tag(tag.Name, tag.Name.ToLower().Replace(" ", "-"));
             await _tagRepository.UpdateTagAsync(id, newTag);
         }
 
         public async Task DeleteTagAsync(int id)
         {
+            var existingTag = await _tagRepository.GetByIdAsync(id);
+            if (existingTag == null)
+                throw new Exception("Tag não encontrada!");
+
             await _tagRepository.DeleteTagAsync(id);
         }
     }

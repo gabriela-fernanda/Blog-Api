@@ -49,23 +49,29 @@ namespace Blog.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateTag(int id, TagRequestDTO tag)
         {
-            var existing = await _tagService.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound("Tag não encontrada!");
-
-            await _tagService.UpdateTagAsync(id, tag);
-            return NoContent();
+            try
+            {
+                await _tagService.UpdateTagAsync(id, tag);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTag(int id)
         {
-            var existing = await _tagService.GetByIdAsync(id);
-            if (existing == null)
-                return NotFound("Tag não encontrada!");
-
-            await _tagService.DeleteTagAsync(id);
-            return NoContent();
+            try
+            {
+                await _tagService.DeleteTagAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

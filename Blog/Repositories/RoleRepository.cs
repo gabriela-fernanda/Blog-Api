@@ -20,8 +20,6 @@ namespace Blog.Repositories
         {
             var sql = "SELECT * FROM Role";
 
-            await _connection.OpenAsync();
-
             return (await _connection.QueryAsync<RoleResponseDTO>(sql)).ToList();
         }
 
