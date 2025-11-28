@@ -73,5 +73,35 @@ namespace Blog.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpGet("GetAllUserRoles")]
+        public async Task<ActionResult<List<User>>> GetAllUserRoles()
+        {
+            try
+            {
+                var users = await _userService.GetAllUsersRolesAsync();
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/Roles")]
+        public async Task<ActionResult<User>> GetUserRolesById(int id)
+        {
+            try
+            {
+                var user = await _userService.GetUserRolesByIdAsync(id);
+                if (user == null)
+                    return NotFound("Usuário não encontrado!");
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }

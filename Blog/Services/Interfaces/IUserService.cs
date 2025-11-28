@@ -10,5 +10,7 @@ namespace Blog.Services.Interfaces
         Task CreateUserAsync(UserRequestDTO user);
         Task UpdateUserAsync(int id, UserRequestDTO userDto);
         Task DeleteUserAsync(int id);
+        Task<List<User>> GetAllUsersRolesAsync();
+        Task<User> GetUserRolesByIdAsync(int id);
     }
 }

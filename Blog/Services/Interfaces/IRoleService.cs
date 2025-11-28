@@ -10,5 +10,7 @@ namespace Blog.Services.Interfaces
         Task CreateRoleAsync(RoleRequestDTO role);
         Task UpdateRoleAsync(int id, RoleRequestDTO role);
         Task DeleteRoleAsync(int id);
+        Task<List<Role>> GetAllRolesUsersAsync();
+        Task<Role> GetRoleUsersByIdAsync(int id);
     }
 }

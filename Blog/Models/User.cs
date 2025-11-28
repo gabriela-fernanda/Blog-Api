@@ -10,9 +10,12 @@
         public string Image { get; private set; }
         public string Slug { get; private set; }
 
-        public  List<Role> Roles { get; private set; }
+        public  List<Role> Roles { get; set; } 
 
-        public User() { }
+        public User()
+        {
+            Roles = new List<Role>();
+        }
 
         public User(string name, string email, string passwordHash, string bio, string image, string slug)
         {
@@ -22,6 +25,7 @@
             Bio = bio;
             Image = image;
             Slug = slug;
+            Roles = new List<Role>();
         }
     }
 }

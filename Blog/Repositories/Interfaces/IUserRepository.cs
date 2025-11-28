@@ -10,5 +10,7 @@ namespace Blog.Repositories.Interfaces
         Task CreateUserAsync(User user);
         Task UpdateUserAsync(int id, User user);
         Task DeleteUserAsync(int id);
+        Task<List<User>> GetAllUserRoles();
+        Task<User> GetUserRolesById(int id);
     }
 }

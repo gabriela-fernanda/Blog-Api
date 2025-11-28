@@ -61,21 +61,65 @@ namespace Blog.Repositories
                         JOIN [Role] r
                         ON r.Id = ur.RoleId";
 
-            IEnumerable<User> userRoles = new List<User>();
+            IEnumerable<User> userRoles = await _connection.QueryAsync<User, Role, User>(
+                sql,
+                (user, role) =>
+                {
+                    user.Roles.Add(role);
+                    return user;
+                },
+                splitOn: "Id"
+            );
 
-            using (var con = _connection)
-            {
-                userRoles = await con.QueryAsync<User, Role, User>(
-                    sql, 
-                    (user, role) => 
-                    {
-                        user.Roles.Add(role);
-                        return user;
-                }, 
-                    splitOn: "Id"
-                );
-            }
-            return userRoles.ToList();
+            var result = userRoles
+                .GroupBy(u => u.Id)
+                .Select(g =>
+                {
+                    var groupedUser = g.First();
+                    groupedUser.Roles = g.SelectMany(u => u.Roles)
+                                         .DistinctBy(r => r.Id)
+                                         .ToList();
+                    return groupedUser;
+                })
+                .ToList();
+
+            return result;
+        }
+
+        public async Task<User> GetUserRolesById(int id)
+        {
+            var sql = @"SELECT *
+                        FROM [User] u
+                        JOIN [UserRole] ur
+                        ON u.id = ur.UserId 
+                        JOIN [Role] r
+                        ON r.Id = ur.RoleId";
+
+            IEnumerable<User> userRoles = await _connection.QueryAsync<User, Role, User>(
+                sql,
+                (user, role) =>
+                {
+                    user.Roles.Add(role);
+                    return user;
+                },
+                new { Id = id },
+                splitOn: "Id"
+            );
+
+            var result = userRoles
+                .GroupBy(u => u.Id)
+                .Select(g =>
+                {
+                    var groupedUser = g.First();
+                    groupedUser.Roles = g.SelectMany(u => u.Roles)
+                                         .DistinctBy(r => r.Id)
+                                         .ToList();
+
+                    return groupedUser;
+                })
+                .FirstOrDefault();
+
+            return result;
         }
     }
 }

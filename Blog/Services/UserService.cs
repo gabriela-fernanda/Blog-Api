@@ -52,5 +52,14 @@ namespace Blog.Services
 
             await _userRepository.DeleteUserAsync(id);
         }
+        public async Task<List<User>> GetAllUsersRolesAsync()
+        {
+            return await _userRepository.GetAllUserRoles();
+        }
+
+        public async Task<User> GetUserRolesByIdAsync(int id)
+        {
+            return await _userRepository.GetUserRolesById(id);
+        }
     }
 }

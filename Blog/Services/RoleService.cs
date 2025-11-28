@@ -48,5 +48,15 @@ namespace Blog.Services
                 throw new Exception("Função não encontrada!");
             await _roleRepository.DeleteRoleAsync(id);
         }
+
+        public async Task<List<Role>> GetAllRolesUsersAsync()
+        {
+            return await _roleRepository.GetAllRoleUsers();
+        }
+
+        public async Task<Role> GetRoleUsersByIdAsync(int id)
+        {
+            return await _roleRepository.GetRoleUsersById(id);
+        }
     }
 }

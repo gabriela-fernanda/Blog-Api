@@ -52,5 +52,71 @@ namespace Blog.Repositories
 
             await _connection.ExecuteAsync(sql, new { Id = id });
         }
+
+        public async Task<List<Role>> GetAllRoleUsers()
+        {
+            var sql = @"SELECT *
+                FROM [Role] r
+                JOIN [UserRole] ur ON r.Id = ur.RoleId
+                JOIN [User] u ON u.Id = ur.UserId";
+
+            IEnumerable<Role> roleUsers = await _connection.QueryAsync<Role, User, Role>(
+                sql,
+                (role, user) =>
+                {
+                    role.Users.Add(user);
+                    return role;
+                },
+                splitOn: "Id"
+            );
+
+            var result = roleUsers
+                .GroupBy(r => r.Id)
+                .Select(g =>
+                {
+                    var groupedRole = g.First();
+                    groupedRole.Users = g.SelectMany(r => r.Users)
+                                         .DistinctBy(u => u.Id)
+                                         .ToList();
+                    return groupedRole;
+                })
+                .ToList();
+
+            return result;
+        }
+
+        public async Task<Role> GetRoleUsersById(int id)
+        {
+            var sql = @"SELECT *
+                FROM [Role] r
+                JOIN [UserRole] ur ON r.Id = ur.RoleId
+                JOIN [User] u ON u.Id = ur.UserId
+                WHERE r.Id = @Id";
+
+            IEnumerable<Role> roleUsers = await _connection.QueryAsync<Role, User, Role>(
+                sql,
+                (role, user) =>
+                {
+                    role.Users.Add(user);
+                    return role;
+                },
+                new { Id = id },
+                splitOn: "Id"
+            );
+
+            var result = roleUsers
+                .GroupBy(r => r.Id)
+                .Select(g =>
+                {
+                    var groupedRole = g.First();
+                    groupedRole.Users = g.SelectMany(r => r.Users)
+                                        .DistinctBy(u => u.Id)
+                                        .ToList();
+                    return groupedRole;
+                })
+                .FirstOrDefault();
+
+            return result;
+        }
     }
 }
