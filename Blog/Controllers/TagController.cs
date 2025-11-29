@@ -11,8 +11,8 @@ namespace Blog.Controllers
     [ApiController]
     public class TagController : ControllerBase
     {
-        private readonly TagService _tagService;
-        public TagController(TagService tagService)
+        private readonly ITagService _tagService;
+        public TagController(ITagService tagService)
         {
             _tagService = tagService;
         }
@@ -67,6 +67,35 @@ namespace Blog.Controllers
             {
                 await _tagService.DeleteTagAsync(id);
                 return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+        [HttpGet("GetAllTagPosts")]
+        public async Task<ActionResult<List<Tag>>> GetAllTagPosts()
+        {
+            try
+            {
+                var tags = await _tagService.GetAllTagsPostsAsync();
+                return Ok(tags);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/Posts")]
+        public async Task<ActionResult<Tag>> GetTagPostsById(int id)
+        {
+            try
+            {
+                var tag = await _tagService.GetTagPostsByIdAsync(id);
+                if (tag == null)
+                    return NotFound("Tag não encontrada!");
+                return Ok(tag);
             }
             catch (Exception ex)
             {

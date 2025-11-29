@@ -11,8 +11,8 @@ namespace Blog.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
-        public UserController(UserService userService)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -34,7 +34,7 @@ namespace Blog.Controllers
         public async Task<ActionResult> CreateUser(UserRequestDTO user)
         {
             await _userService.CreateUserAsync(user);
-            return Created("", null);
+            return Created();
         }
 
         [HttpGet("{id}")]

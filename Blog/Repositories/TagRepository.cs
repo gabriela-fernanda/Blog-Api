@@ -47,5 +47,71 @@ namespace Blog.Repositories
             var sql = "DELETE FROM Tag WHERE Id = @Id";
             await _connection.ExecuteAsync(sql, new { Id = id });
         }
+
+        public async Task<List<Tag>> GetAllTagPosts()
+        {
+            var sql = @"SELECT *
+                FROM [Tag] t
+                JOIN [PostTag] pt ON t.Id = pt.TagId
+                JOIN [Post] p ON p.Id = pt.PostId";
+
+            IEnumerable<Tag> tagPosts = await _connection.QueryAsync<Tag, Post, Tag>(
+                sql,
+                (tag, post) =>
+                {
+                    tag.Posts.Add(post);
+                    return tag;
+                },
+                splitOn: "Id"
+            );
+
+            var result = tagPosts
+                .GroupBy(t => t.Id)
+                .Select(g =>
+                {
+                    var groupedTag = g.First();
+                    groupedTag.Posts = g.SelectMany(r => r.Posts)
+                                         .DistinctBy(p => p.Id)
+                                         .ToList();
+                    return groupedTag;
+                })
+                .ToList();
+
+            return result;
+        }
+
+        public async Task<Tag> GetTagPostsById(int id)
+        {
+            var sql = @"SELECT *
+                FROM [Tag] t
+                JOIN [PostTag] pt ON t.Id = pt.TagId
+                JOIN [Post] p ON p.Id = pt.PostId
+                WHERE t.Id = @Id";
+
+            IEnumerable<Tag> tagPosts = await _connection.QueryAsync<Tag, Post, Tag>(
+                sql,
+                (tag, post) =>
+                {
+                    tag.Posts.Add(post);
+                    return tag;
+                },
+                new { Id = id },
+                splitOn: "Id"
+            );
+
+            var result = tagPosts
+                .GroupBy(t => t.Id)
+                .Select(g =>
+                {
+                    var groupedTag = g.First();
+                    groupedTag.Posts = g.SelectMany(t => t.Posts)
+                                        .DistinctBy(p => p.Id)
+                                        .ToList();
+                    return groupedTag;
+                })
+                .FirstOrDefault();
+
+            return result;
+        }
     }
 }

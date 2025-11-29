@@ -93,7 +93,8 @@ namespace Blog.Repositories
                         JOIN [UserRole] ur
                         ON u.id = ur.UserId 
                         JOIN [Role] r
-                        ON r.Id = ur.RoleId";
+                        ON r.Id = ur.RoleId
+                        WHERE u.Id = @Id";
 
             IEnumerable<User> userRoles = await _connection.QueryAsync<User, Role, User>(
                 sql,

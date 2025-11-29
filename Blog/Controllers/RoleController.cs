@@ -11,9 +11,9 @@ namespace Blog.Controllers
     [ApiController]
     public class RoleController : ControllerBase
     {
-        private readonly RoleService _roleService;
+        private readonly IRoleService _roleService;
 
-        public RoleController(RoleService roleService)
+        public RoleController(IRoleService roleService)
         {
             _roleService = roleService;
         }

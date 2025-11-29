@@ -10,5 +10,7 @@ namespace Blog.Repositories.Interfaces
         Task CreateTagAsync(Tag tag);
         Task UpdateTagAsync(int id, Tag tag);
         Task DeleteTagAsync(int id);
+        Task<List<Tag>> GetAllTagPosts();
+        Task<Tag> GetTagPostsById(int id);
     }
 }

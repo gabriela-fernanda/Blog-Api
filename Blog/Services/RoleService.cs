@@ -1,15 +1,16 @@
 ﻿using Blog.Models;
 using Blog.Models.DTOs;
 using Blog.Repositories;
+using Blog.Repositories.Interfaces;
 using Blog.Services.Interfaces;
 
 namespace Blog.Services
 {
     public class RoleService : IRoleService
     {
-        public RoleRepository _roleRepository { get; set; }
+        public  IRoleRepository _roleRepository { get; set; }
 
-        public RoleService(RoleRepository roleRepository)
+        public RoleService(IRoleRepository roleRepository)
         {
             _roleRepository = roleRepository;
         }

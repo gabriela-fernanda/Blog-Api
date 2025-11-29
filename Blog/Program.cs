@@ -10,18 +10,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<ConnectionDB>();
-builder.Services.AddSingleton<CategoryRepository>();
-builder.Services.AddSingleton<CategoryService>();
+builder.Services.AddScoped<ConnectionDB>();
+builder.Services.AddScoped<CategoryRepository>();
+builder.Services.AddScoped<CategoryService>();
 
-builder.Services.AddSingleton<RoleRepository>();
-builder.Services.AddSingleton<RoleService>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 
-builder.Services.AddSingleton<TagRepository>();
-builder.Services.AddSingleton<TagService>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ITagService, TagService>();
 
-builder.Services.AddSingleton<UserRepository>();
-builder.Services.AddSingleton<UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IUserRoleService, UserRoleService>();
+
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IPostService, PostService>();
+
+builder.Services.AddScoped<IPostTagRepository, PostTagRepository>();
+builder.Services.AddScoped<IPostTagService, PostTagService>();
+
 
 
 

@@ -8,9 +8,9 @@ namespace Blog.Services
 {
     public class TagService : ITagService
     {
-        public readonly TagRepository _tagRepository;
+        public readonly ITagRepository _tagRepository;
 
-        public TagService(TagRepository tagRepository)
+        public TagService(ITagRepository tagRepository)
         {
             _tagRepository = tagRepository;
         }
@@ -48,6 +48,15 @@ namespace Blog.Services
                 throw new Exception("Tag não encontrada!");
 
             await _tagRepository.DeleteTagAsync(id);
+        }
+        public async Task<List<Tag>> GetAllTagsPostsAsync()
+        {
+            return await _tagRepository.GetAllTagPosts();
+        }
+
+        public async Task<Tag> GetTagPostsByIdAsync(int id)
+        {
+            return await _tagRepository.GetTagPostsById(id);
         }
     }
 }

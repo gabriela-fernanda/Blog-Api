@@ -10,5 +10,7 @@ namespace Blog.Services.Interfaces
         Task CreateTagAsync(TagRequestDTO tag);
         Task UpdateTagAsync(int id, TagRequestDTO tag);
         Task DeleteTagAsync(int id);
+        Task<List<Tag>> GetAllTagsPostsAsync();
+        Task<Tag> GetTagPostsByIdAsync(int id);
     }
 }
